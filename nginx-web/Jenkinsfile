@@ -27,7 +27,7 @@ node {
         }
     }
     stage('Start and enable NGINX server'){
-        def startNGINX = 'sudo systemctl start nginx'
+        def startNGINX = 'sudo systemctl restart nginx'
         def enableNGINX = 'sudo systemctl enable nginx'
         sshagent(['b3e9356b-6c02-4a33-9f13-b36c68367023']) {
             sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${startNGINX}"
