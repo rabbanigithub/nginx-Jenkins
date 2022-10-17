@@ -13,12 +13,16 @@ node {
     stage('Copy web code to NGINX document root'){
         def createTmpDir = 'mkdir /tmp/tmpWebFiles'
         def tmpFileDir = '/tmp/tmpWebFiles'
-        def mvWebFiles = 'sudo mv /tmp/tmpWebFiles/* /var/www/html/'
-        def webFiles  = './nginx-web/html-web/* '
+	def CfgFile  = './nginx-web/nginx.conf'
+        def webFiles  = './nginx-web/html-web/*'
+	def mvCfgFile = 'sudo mv /tmp/tmpWebFiles/nginx.conf /etc/nginx/'
+	def mvWebFiles = 'sudo mv /tmp/tmpWebFiles/* /var/www/html/'
 	def rmTmpDir = 'sudo rm -fr /tmp/tmpWebFiles'
         sshagent(['6a534226-e2cb-41a5-bd5b-24427216b285']) {
             sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${createTmpDir}"
+	    sh "scp -o StrictHostKeyChecking=no ${CfgFile} vagrant@10.11.12.90:${tmpFileDir}"
             sh "scp -o StrictHostKeyChecking=no ${webFiles} vagrant@10.11.12.90:${tmpFileDir}"
+	    sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${mvCfgFile}"
             sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${mvWebFiles}"
             sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${rmTmpDir}"
         }
