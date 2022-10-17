@@ -15,13 +15,15 @@ node {
         def tmpFileDir = '/tmp/tmpWebFiles'
 	def CfgFile  = './nginx-web/nginx.conf'
         def webFiles  = './nginx-web/html-web/*'
+	def createHomeDir = 'mkdir /var/www/domainname.com'
 	def mvCfgFile = 'sudo mv /tmp/tmpWebFiles/nginx.conf /etc/nginx/'
-	def mvWebFiles = 'sudo mv /tmp/tmpWebFiles/* /var/www/html/'
+	def mvWebFiles = 'sudo mv /tmp/tmpWebFiles/* /var/www/domainname.com/'
 	def rmTmpDir = 'sudo rm -fr /tmp/tmpWebFiles'
         sshagent(['b3e9356b-6c02-4a33-9f13-b36c68367023']) {
             sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${createTmpDir}"
 	    sh "scp -o StrictHostKeyChecking=no ${CfgFile} vagrant@10.11.12.90:${tmpFileDir}"
             sh "scp -o StrictHostKeyChecking=no ${webFiles} vagrant@10.11.12.90:${tmpFileDir}"
+	    sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${createHomeDir}"
 	    sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${mvCfgFile}"
             sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${mvWebFiles}"
             sh "ssh -o StrictHostKeyChecking=no vagrant@10.11.12.90 ${rmTmpDir}"
