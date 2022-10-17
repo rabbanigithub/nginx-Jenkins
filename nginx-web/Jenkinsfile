@@ -15,7 +15,7 @@ node {
         def tmpFileDir = '/tmp/tmpWebFiles'
 	def CfgFile  = './nginx-web/nginx.conf'
         def webFiles  = './nginx-web/html-web/*'
-	def createHomeDir = 'mkdir /var/www/domainname.com'
+	def createHomeDir = 'sudo mkdir /var/www/domainname.com'
 	def mvCfgFile = 'sudo mv /tmp/tmpWebFiles/nginx.conf /etc/nginx/'
 	def mvWebFiles = 'sudo mv /tmp/tmpWebFiles/* /var/www/domainname.com/'
 	def rmTmpDir = 'sudo rm -fr /tmp/tmpWebFiles'
